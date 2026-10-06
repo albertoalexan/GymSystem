@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# .NET
+bin/
+obj/
+
+# Backups temporales
+*.copia*
+*.capa*
+
+# Archivos temporales
+*.tmp
+*.log
+
+# NuGet
+packages/
