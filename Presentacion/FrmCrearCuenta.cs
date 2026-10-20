@@ -16,7 +16,17 @@ public partial class FrmCrearCuenta : Form
         CancelButton = btnCancelar;
     }
 
-    private void BtnCrear_Click(
+    private void ChkMostrarClaves_CheckedChanged(
+        object? sender,
+        EventArgs e)
+    {
+        bool mostrar = chkMostrarClaves.Checked;
+
+        txtClave.UseSystemPasswordChar = !mostrar;
+
+        txtConfirmarClave.UseSystemPasswordChar = !mostrar;
+    }
+    private async void BtnCrear_Click(
         object? sender,
         EventArgs e)
     {
@@ -162,7 +172,7 @@ public partial class FrmCrearCuenta : Form
 
         try
         {
-            usuarioService.CrearCuenta(
+            await usuarioService.CrearCuentaAsync(
                 nombre,
                 usuario,
                 clave,

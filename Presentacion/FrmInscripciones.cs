@@ -21,19 +21,16 @@ public partial class FrmInscripciones : Form
         inscripcionService = new InscripcionService();
 
         Load += FrmInscripciones_Load;
-        cmbPlan.SelectedIndexChanged += CmbPlan_SelectedIndexChanged;
-        dtpFechaInicio.ValueChanged += DtpFechaInicio_ValueChanged;
         dgvInscripciones.CellClick += DgvInscripciones_CellClick;
-        txtBuscar.TextChanged += TxtBuscar_TextChanged;
     }
 
-    private void FrmInscripciones_Load(
+    private async void FrmInscripciones_Load(
         object? sender,
         EventArgs e)
     {
-        CargarClientes();
-        CargarPlanes();
-        CargarInscripciones();
+        await CargarClientesAsync();
+        await CargarPlanesAsync();
+        await CargarInscripcionesAsync();
 
         dtpFechaInicio.Value =
             DateTime.Today;
@@ -45,12 +42,12 @@ public partial class FrmInscripciones : Form
         cmbPlan.SelectedIndex = -1;
     }
 
-    private void CargarClientes()
+    private async Task CargarClientesAsync()
     {
         try
         {
             List<Cliente> clientes =
-                clienteService.Listar(true);
+                await clienteService.ListarAsync(true);
 
             cmbCliente.DataSource = clientes;
             cmbCliente.DisplayMember = "Nombre";
@@ -68,12 +65,12 @@ public partial class FrmInscripciones : Form
         }
     }
 
-    private void CargarPlanes()
+    private async Task CargarPlanesAsync()
     {
         try
         {
             List<Plan> planes =
-                planService.Listar(true);
+                await planService.ListarAsync(true);
 
             cmbPlan.DataSource = planes;
             cmbPlan.DisplayMember = "Nombre";
@@ -91,13 +88,13 @@ public partial class FrmInscripciones : Form
         }
     }
 
-    private void CargarInscripciones(
+    private async Task CargarInscripcionesAsync(
         string textoBuscar = "")
     {
         try
         {
             List<Inscripcion> inscripciones =
-                inscripcionService.Buscar(
+                await inscripcionService.BuscarAsync(
                     textoBuscar);
 
             DataTable tabla =
@@ -333,7 +330,7 @@ public partial class FrmInscripciones : Form
         return true;
     }
 
-    private void BtnGuardar_Click(
+    private async void BtnGuardar_Click(
         object? sender,
         EventArgs e)
     {
@@ -369,7 +366,7 @@ public partial class FrmInscripciones : Form
 
         try
         {
-            inscripcionService.Registrar(
+            await inscripcionService.RegistrarAsync(
                 inscripcion);
 
             MessageBox.Show(
@@ -382,7 +379,7 @@ public partial class FrmInscripciones : Form
                 null,
                 EventArgs.Empty);
 
-            CargarInscripciones(
+            await CargarInscripcionesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (ArgumentException ex)
@@ -404,7 +401,7 @@ public partial class FrmInscripciones : Form
         }
     }
 
-    private void BtnEliminar_Click(
+    private async void BtnEliminar_Click(
         object? sender,
         EventArgs e)
     {
@@ -438,7 +435,7 @@ public partial class FrmInscripciones : Form
 
         try
         {
-            inscripcionService.Cancelar(
+            await inscripcionService.CancelarAsync(
                 idInscripcion);
 
             MessageBox.Show(
@@ -451,7 +448,7 @@ public partial class FrmInscripciones : Form
                 null,
                 EventArgs.Empty);
 
-            CargarInscripciones(
+            await CargarInscripcionesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (Exception ex)
@@ -519,11 +516,11 @@ public partial class FrmInscripciones : Form
         }
     }
 
-    private void TxtBuscar_TextChanged(
+    private async void TxtBuscar_TextChanged(
         object? sender,
         EventArgs e)
     {
-        CargarInscripciones(
+        await CargarInscripcionesAsync(
             txtBuscar.Text.Trim());
     }
 }

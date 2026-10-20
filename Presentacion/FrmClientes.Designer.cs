@@ -86,174 +86,457 @@ partial class FrmClientes
         // =====================================================
 
         AutoScaleMode = AutoScaleMode.Font;
-        BackColor = Color.FromArgb(245, 247, 250);
-        ClientSize = new Size(1150, 680);
-        MinimumSize = new Size(1000, 600);
+
+        BackColor = Color.FromArgb(246, 248, 252);
+
+        ClientSize = new Size(1150, 700);
+
+        MinimumSize = new Size(900, 580);
+
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "GymSystem - Clientes";
+
+        Text = "GymSystem | Gestión de clientes";
+
+        Font = new Font(
+            "Segoe UI",
+            9F,
+            FontStyle.Regular);
 
         // =====================================================
-        // PANEL SUPERIOR
+        // ENCABEZADO Y BÚSQUEDA
         // =====================================================
 
         panelSuperior.BackColor = Color.White;
-        panelSuperior.Dock = DockStyle.Top;
-        panelSuperior.Height = 80;
 
-        lblTitulo.AutoSize = true;
-        lblTitulo.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-        lblTitulo.ForeColor = Color.FromArgb(30, 41, 59);
-        lblTitulo.Location = new Point(25, 20);
+        panelSuperior.Dock = DockStyle.Top;
+
+        panelSuperior.Height = 100;
+
+        TableLayoutPanel layoutSuperior = new TableLayoutPanel();
+
+        layoutSuperior.Dock = DockStyle.Fill;
+
+        layoutSuperior.BackColor = Color.White;
+
+        layoutSuperior.Padding = new Padding(22, 10, 18, 10);
+
+        layoutSuperior.Margin = Padding.Empty;
+
+        layoutSuperior.ColumnCount = 3;
+
+        layoutSuperior.RowCount = 2;
+
+        layoutSuperior.ColumnStyles.Add(
+            new ColumnStyle(SizeType.Percent, 42F));
+
+        layoutSuperior.ColumnStyles.Add(
+            new ColumnStyle(SizeType.Percent, 37F));
+
+        layoutSuperior.ColumnStyles.Add(
+            new ColumnStyle(SizeType.Percent, 21F));
+
+        layoutSuperior.RowStyles.Add(
+            new RowStyle(SizeType.Percent, 48F));
+
+        layoutSuperior.RowStyles.Add(
+            new RowStyle(SizeType.Percent, 52F));
+
+        // Título y descripción
+
+        Panel panelTituloClientes = new Panel();
+
+        panelTituloClientes.Dock = DockStyle.Fill;
+
+        panelTituloClientes.BackColor = Color.White;
+
+        lblTitulo.AutoSize = false;
+
+        lblTitulo.Font = new Font(
+            "Segoe UI",
+            21F,
+            FontStyle.Bold);
+
+        lblTitulo.ForeColor = Color.FromArgb(15, 23, 42);
+
+        lblTitulo.Location = new Point(0, 7);
+
+        lblTitulo.Size = new Size(310, 38);
+
         lblTitulo.Text = "Clientes";
 
-        lblBuscar.AutoSize = true;
-        lblBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblBuscar.ForeColor = Color.FromArgb(71, 85, 105);
-        lblBuscar.Location = new Point(400, 17);
-        lblBuscar.Text = "Buscar cliente";
+        Label lblDescripcionSuperior = new Label();
 
-        txtBuscar.Font = new Font("Segoe UI", 10F);
-        txtBuscar.Location = new Point(400, 40);
-        txtBuscar.Size = new Size(350, 30);
+        lblDescripcionSuperior.AutoSize = false;
+
+        lblDescripcionSuperior.Font = new Font(
+            "Segoe UI",
+            9F,
+            FontStyle.Regular);
+
+        lblDescripcionSuperior.ForeColor =
+            Color.FromArgb(100, 116, 139);
+
+        lblDescripcionSuperior.Location = new Point(2, 45);
+
+        lblDescripcionSuperior.Size = new Size(330, 22);
+
+        lblDescripcionSuperior.Text =
+            "Administra la información de tus clientes.";
+
+        panelTituloClientes.Controls.Add(lblTitulo);
+
+        panelTituloClientes.Controls.Add(
+            lblDescripcionSuperior);
+
+        layoutSuperior.Controls.Add(
+            panelTituloClientes,
+            0,
+            0);
+
+        layoutSuperior.SetRowSpan(
+            panelTituloClientes,
+            2);
+
+        // Etiqueta de búsqueda
+
+        lblBuscar.Dock = DockStyle.Fill;
+
+        lblBuscar.Font = new Font(
+            "Segoe UI",
+            8.5F,
+            FontStyle.Bold);
+
+        lblBuscar.ForeColor = Color.FromArgb(71, 85, 105);
+
+        lblBuscar.Margin = new Padding(10, 0, 5, 0);
+
+        lblBuscar.Text = "BUSCAR CLIENTE";
+
+        lblBuscar.TextAlign =
+            ContentAlignment.BottomLeft;
+
+        layoutSuperior.Controls.Add(
+            lblBuscar,
+            1,
+            0);
+
+        // Campo de búsqueda
+
+        txtBuscar.Dock = DockStyle.Fill;
+
+        txtBuscar.Font = new Font(
+            "Segoe UI",
+            10F,
+            FontStyle.Regular);
+
+        txtBuscar.BackColor = Color.FromArgb(248, 250, 252);
+
+        txtBuscar.ForeColor = Color.FromArgb(15, 23, 42);
+
+        txtBuscar.BorderStyle = BorderStyle.FixedSingle;
+
+        txtBuscar.Margin = new Padding(10, 4, 12, 5);
+
+        txtBuscar.PlaceholderText =
+            "Nombre, cédula o correo";
+
+        layoutSuperior.Controls.Add(
+            txtBuscar,
+            1,
+            1);
+
+        // Filtro de inactivos
+
+        Label lblFiltro = new Label();
+
+        lblFiltro.Dock = DockStyle.Fill;
+
+        lblFiltro.Font = new Font(
+            "Segoe UI",
+            8.5F,
+            FontStyle.Bold);
+
+        lblFiltro.ForeColor = Color.FromArgb(71, 85, 105);
+
+        lblFiltro.Margin = new Padding(6, 0, 0, 0);
+
+        lblFiltro.Text = "FILTROS";
+
+        lblFiltro.TextAlign = ContentAlignment.BottomLeft;
+
+        layoutSuperior.Controls.Add(
+            lblFiltro,
+            2,
+            0);
 
         chkInactivos.AutoSize = true;
-        chkInactivos.Font = new Font("Segoe UI", 9F);
-        chkInactivos.ForeColor = Color.FromArgb(71, 85, 105);
-        chkInactivos.Location = new Point(775, 43);
+
+        chkInactivos.BackColor = Color.White;
+
+        chkInactivos.Cursor = Cursors.Hand;
+
+        chkInactivos.Font = new Font(
+            "Segoe UI",
+            9F,
+            FontStyle.Regular);
+
+        chkInactivos.ForeColor =
+            Color.FromArgb(51, 65, 85);
+
+        chkInactivos.Margin = new Padding(6, 7, 0, 0);
+
         chkInactivos.Text = "Mostrar inactivos";
+
         chkInactivos.Checked = false;
 
-        panelSuperior.Controls.Add(lblTitulo);
-        panelSuperior.Controls.Add(lblBuscar);
-        panelSuperior.Controls.Add(txtBuscar);
-        panelSuperior.Controls.Add(chkInactivos);
+        layoutSuperior.Controls.Add(
+            chkInactivos,
+            2,
+            1);
+
+        panelSuperior.Controls.Add(layoutSuperior);
 
         // =====================================================
-        // PANEL FORMULARIO
+        // PANEL DE DATOS DEL CLIENTE
         // =====================================================
 
         panelFormulario.BackColor = Color.White;
+
         panelFormulario.Dock = DockStyle.Left;
-        panelFormulario.Padding = new Padding(20);
-        panelFormulario.Size = new Size(350, 600);
+
+        panelFormulario.Width = 370;
+
+        panelFormulario.Padding = new Padding(18, 12, 18, 12);
+
+        panelFormulario.AutoScroll = true;
+
+        // Encabezado del formulario
+
+        Label lblTituloFormulario = new Label();
+
+        lblTituloFormulario.AutoSize = false;
+
+        lblTituloFormulario.Font = new Font(
+            "Segoe UI",
+            10F,
+            FontStyle.Bold);
+
+        lblTituloFormulario.ForeColor =
+            Color.FromArgb(22, 163, 74);
+
+        lblTituloFormulario.Location = new Point(18, 11);
+
+        lblTituloFormulario.Size = new Size(320, 23);
+
+        lblTituloFormulario.Text = "DATOS DEL CLIENTE";
+
+        Label lblAyudaFormulario = new Label();
+
+        lblAyudaFormulario.AutoSize = false;
+
+        lblAyudaFormulario.Font = new Font(
+            "Segoe UI",
+            8F,
+            FontStyle.Regular);
+
+        lblAyudaFormulario.ForeColor =
+            Color.FromArgb(100, 116, 139);
+
+        lblAyudaFormulario.Location = new Point(18, 34);
+
+        lblAyudaFormulario.Size = new Size(320, 19);
+
+        lblAyudaFormulario.Text =
+            "Completa los campos para registrar o editar.";
 
         // Nombre
-        lblNombre.AutoSize = true;
-        lblNombre.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblNombre.ForeColor = Color.FromArgb(51, 65, 85);
-        lblNombre.Location = new Point(20, 20);
-        lblNombre.Text = "Nombre completo";
 
-        txtNombre.Font = new Font("Segoe UI", 10F);
-        txtNombre.Location = new Point(20, 45);
-        txtNombre.Size = new Size(290, 30);
+        ConfigurarEtiquetaCliente(
+            lblNombre,
+            "Nombre completo",
+            61);
+
+        ConfigurarCampoCliente(
+            txtNombre,
+            82,
+            324);
+
+        txtNombre.MaxLength = 100;
+
+        txtNombre.PlaceholderText =
+            "Nombre y apellidos";
 
         // Cédula
-        lblCedula.AutoSize = true;
-        lblCedula.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblCedula.ForeColor = Color.FromArgb(51, 65, 85);
-        lblCedula.Location = new Point(20, 85);
-        lblCedula.Text = "Número de cédula";
 
-        txtCedula.Font = new Font("Segoe UI", 10F);
-        txtCedula.Location = new Point(20, 110);
-        txtCedula.Size = new Size(290, 30);
+        ConfigurarEtiquetaCliente(
+            lblCedula,
+            "Número de cédula",
+            122);
+
+        ConfigurarCampoCliente(
+            txtCedula,
+            143,
+            324);
+
+        txtCedula.MaxLength = 20;
+
+        txtCedula.PlaceholderText =
+            "Número de identificación";
 
         // Correo
-        lblCorreo.AutoSize = true;
-        lblCorreo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblCorreo.ForeColor = Color.FromArgb(51, 65, 85);
-        lblCorreo.Location = new Point(20, 150);
-        lblCorreo.Text = "Correo electrónico";
 
-        txtCorreo.Font = new Font("Segoe UI", 10F);
-        txtCorreo.Location = new Point(20, 175);
-        txtCorreo.Size = new Size(290, 30);
+        ConfigurarEtiquetaCliente(
+            lblCorreo,
+            "Correo electrónico",
+            183);
+
+        ConfigurarCampoCliente(
+            txtCorreo,
+            204,
+            324);
+
+        txtCorreo.MaxLength = 100;
+
+        txtCorreo.PlaceholderText =
+            "nombre@correo.com";
 
         // Teléfono
-        lblTelefono.AutoSize = true;
-        lblTelefono.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblTelefono.ForeColor = Color.FromArgb(51, 65, 85);
-        lblTelefono.Location = new Point(20, 215);
-        lblTelefono.Text = "Teléfono";
 
-        txtTelefono.Font = new Font("Segoe UI", 10F);
-        txtTelefono.Location = new Point(20, 240);
-        txtTelefono.Size = new Size(290, 30);
+        ConfigurarEtiquetaCliente(
+            lblTelefono,
+            "Teléfono",
+            244);
+
+        ConfigurarCampoCliente(
+            txtTelefono,
+            265,
+            324);
+
+        txtTelefono.MaxLength = 20;
+
+        txtTelefono.PlaceholderText =
+            "Número de teléfono";
 
         // Dirección
-        lblDireccion.AutoSize = true;
-        lblDireccion.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblDireccion.ForeColor = Color.FromArgb(51, 65, 85);
-        lblDireccion.Location = new Point(20, 280);
-        lblDireccion.Text = "Dirección";
 
-        txtDireccion.Font = new Font("Segoe UI", 10F);
-        txtDireccion.Location = new Point(20, 305);
+        ConfigurarEtiquetaCliente(
+            lblDireccion,
+            "Dirección",
+            305);
+
+        txtDireccion.Font = new Font(
+            "Segoe UI",
+            9.5F,
+            FontStyle.Regular);
+
+        txtDireccion.Location = new Point(18, 326);
+
         txtDireccion.Multiline = true;
-        txtDireccion.Size = new Size(290, 55);
+
+        txtDireccion.ScrollBars = ScrollBars.Vertical;
+
+        txtDireccion.Size = new Size(324, 43);
+
+        txtDireccion.BorderStyle = BorderStyle.FixedSingle;
+
+        txtDireccion.BackColor =
+            Color.FromArgb(248, 250, 252);
+
+        txtDireccion.ForeColor =
+            Color.FromArgb(15, 23, 42);
 
         // Fecha de nacimiento
-        lblFechaNacimiento.AutoSize = true;
-        lblFechaNacimiento.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblFechaNacimiento.ForeColor = Color.FromArgb(51, 65, 85);
-        lblFechaNacimiento.Location = new Point(20, 375);
-        lblFechaNacimiento.Text = "Fecha de nacimiento";
 
-        dtpFechaNacimiento.Font = new Font("Segoe UI", 10F);
-        dtpFechaNacimiento.Format = DateTimePickerFormat.Short;
-        dtpFechaNacimiento.Location = new Point(20, 400);
-        dtpFechaNacimiento.Size = new Size(170, 30);
-        dtpFechaNacimiento.MaxDate = DateTime.Today;
-        dtpFechaNacimiento.Value = DateTime.Today;
+        ConfigurarEtiquetaCliente(
+            lblFechaNacimiento,
+            "Fecha de nacimiento",
+            379);
+
+        dtpFechaNacimiento.Font = new Font(
+            "Segoe UI",
+            9.5F,
+            FontStyle.Regular);
+
+        dtpFechaNacimiento.Format =
+            DateTimePickerFormat.Short;
+
+        dtpFechaNacimiento.Location =
+            new Point(18, 400);
+
+        dtpFechaNacimiento.Size =
+            new Size(185, 29);
+
+        dtpFechaNacimiento.MaxDate =
+            DateTime.Today;
+
+        dtpFechaNacimiento.Value =
+            DateTime.Today;
 
         // =====================================================
         // BOTONES
         // =====================================================
 
-        btnNuevo.BackColor = Color.White;
-        btnNuevo.FlatStyle = FlatStyle.Flat;
-        btnNuevo.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);
-        btnNuevo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        btnNuevo.ForeColor = Color.FromArgb(51, 65, 85);
-        btnNuevo.Location = new Point(20, 465);
-        btnNuevo.Size = new Size(135, 40);
-        btnNuevo.Text = "Nuevo";
-        btnNuevo.UseVisualStyleBackColor = true;
+        ConfigurarBotonCliente(
+            btnNuevo,
+            "Nuevo",
+            new Point(18, 447),
+            new Size(157, 39),
+            Color.White,
+            Color.FromArgb(51, 65, 85),
+            Color.FromArgb(203, 213, 225),
+            Color.FromArgb(248, 250, 252),
+            Color.FromArgb(226, 232, 240),
+            true);
+
         btnNuevo.Click += BtnNuevo_Click;
 
-        btnGuardar.BackColor = Color.FromArgb(37, 99, 235);
-        btnGuardar.FlatStyle = FlatStyle.Flat;
-        btnGuardar.FlatAppearance.BorderSize = 0;
-        btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        btnGuardar.ForeColor = Color.White;
-        btnGuardar.Location = new Point(175, 465);
-        btnGuardar.Size = new Size(135, 40);
-        btnGuardar.Text = "Guardar";
-        btnGuardar.UseVisualStyleBackColor = false;
+        ConfigurarBotonCliente(
+            btnGuardar,
+            "Guardar",
+            new Point(185, 447),
+            new Size(157, 39),
+            Color.FromArgb(22, 163, 74),
+            Color.White,
+            Color.Transparent,
+            Color.FromArgb(21, 128, 61),
+            Color.FromArgb(22, 101, 52),
+            false);
+
         btnGuardar.Click += BtnGuardar_Click;
 
-        btnEliminar.BackColor = Color.FromArgb(220, 38, 38);
-        btnEliminar.FlatStyle = FlatStyle.Flat;
-        btnEliminar.FlatAppearance.BorderSize = 0;
-        btnEliminar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        btnEliminar.ForeColor = Color.White;
-        btnEliminar.Location = new Point(20, 520);
-        btnEliminar.Size = new Size(135, 40);
-        btnEliminar.Text = "Desactivar";
-        btnEliminar.UseVisualStyleBackColor = false;
+        ConfigurarBotonCliente(
+            btnEliminar,
+            "Desactivar",
+            new Point(18, 495),
+            new Size(157, 39),
+            Color.FromArgb(220, 38, 38),
+            Color.White,
+            Color.Transparent,
+            Color.FromArgb(185, 28, 28),
+            Color.FromArgb(153, 27, 27),
+            false);
+
         btnEliminar.Click += BtnEliminar_Click;
 
-        btnRestaurar.BackColor = Color.FromArgb(22, 163, 74);
-        btnRestaurar.FlatStyle = FlatStyle.Flat;
-        btnRestaurar.FlatAppearance.BorderSize = 0;
-        btnRestaurar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        btnRestaurar.ForeColor = Color.White;
-        btnRestaurar.Location = new Point(175, 520);
-        btnRestaurar.Size = new Size(135, 40);
-        btnRestaurar.Text = "Restaurar";
-        btnRestaurar.UseVisualStyleBackColor = false;
+        ConfigurarBotonCliente(
+            btnRestaurar,
+            "Restaurar",
+            new Point(185, 495),
+            new Size(157, 39),
+            Color.FromArgb(37, 99, 235),
+            Color.White,
+            Color.Transparent,
+            Color.FromArgb(29, 78, 216),
+            Color.FromArgb(30, 64, 175),
+            false);
+
         btnRestaurar.Click += BtnRestaurar_Click;
+
+        // Agregar los controles del formulario
+
+        panelFormulario.Controls.Add(lblTituloFormulario);
+
+        panelFormulario.Controls.Add(lblAyudaFormulario);
 
         panelFormulario.Controls.Add(lblNombre);
         panelFormulario.Controls.Add(txtNombre);
@@ -279,42 +562,285 @@ partial class FrmClientes
         panelFormulario.Controls.Add(btnRestaurar);
 
         // =====================================================
-        // PANEL LISTA
+        // PANEL DE LISTADO
         // =====================================================
 
-        panelLista.BackColor = Color.FromArgb(245, 247, 250);
+        panelLista.BackColor =
+            Color.FromArgb(246, 248, 252);
+
         panelLista.Dock = DockStyle.Fill;
-        panelLista.Padding = new Padding(20);
+
+        panelLista.Padding = new Padding(18);
+
+        // Encabezado del listado
+
+        Panel panelEncabezadoLista = new Panel();
+
+        panelEncabezadoLista.Dock = DockStyle.Top;
+
+        panelEncabezadoLista.Height = 63;
+
+        panelEncabezadoLista.BackColor =
+            Color.FromArgb(246, 248, 252);
+
+        Label lblTituloLista = new Label();
+
+        lblTituloLista.AutoSize = false;
+
+        lblTituloLista.Font = new Font(
+            "Segoe UI",
+            13F,
+            FontStyle.Bold);
+
+        lblTituloLista.ForeColor =
+            Color.FromArgb(15, 23, 42);
+
+        lblTituloLista.Location = new Point(1, 0);
+
+        lblTituloLista.Size = new Size(500, 29);
+
+        lblTituloLista.Text = "Listado de clientes";
+
+        Label lblDescripcionLista = new Label();
+
+        lblDescripcionLista.AutoSize = false;
+
+        lblDescripcionLista.Font = new Font(
+            "Segoe UI",
+            8.5F,
+            FontStyle.Regular);
+
+        lblDescripcionLista.ForeColor =
+            Color.FromArgb(100, 116, 139);
+
+        lblDescripcionLista.Location = new Point(2, 31);
+
+        lblDescripcionLista.Size = new Size(520, 22);
+
+        lblDescripcionLista.Text =
+            "Selecciona una fila para ver o editar sus datos.";
+
+        panelEncabezadoLista.Controls.Add(lblTituloLista);
+
+        panelEncabezadoLista.Controls.Add(lblDescripcionLista);
+
+        // =====================================================
+        // TABLA DE CLIENTES
+        // =====================================================
 
         dgvClientes.BackgroundColor = Color.White;
+
         dgvClientes.BorderStyle = BorderStyle.None;
-        dgvClientes.ColumnHeadersHeight = 40;
+
+        dgvClientes.GridColor =
+            Color.FromArgb(226, 232, 240);
+
         dgvClientes.RowHeadersVisible = false;
 
         dgvClientes.AllowUserToAddRows = false;
+
         dgvClientes.AllowUserToDeleteRows = false;
+
         dgvClientes.AllowUserToResizeRows = false;
+
+        dgvClientes.MultiSelect = false;
+
+        dgvClientes.ReadOnly = true;
 
         dgvClientes.Dock = DockStyle.Fill;
 
         dgvClientes.SelectionMode =
             DataGridViewSelectionMode.FullRowSelect;
 
-        dgvClientes.MultiSelect = false;
-        dgvClientes.ReadOnly = true;
         dgvClientes.AutoSizeColumnsMode =
             DataGridViewAutoSizeColumnsMode.Fill;
 
+        dgvClientes.AutoSizeRowsMode =
+            DataGridViewAutoSizeRowsMode.None;
+
+        dgvClientes.ColumnHeadersHeight = 44;
+
+        dgvClientes.ColumnHeadersHeightSizeMode =
+            DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+
+        dgvClientes.EnableHeadersVisualStyles = false;
+
+        dgvClientes.ColumnHeadersBorderStyle =
+            DataGridViewHeaderBorderStyle.Single;
+
+        dgvClientes.CellBorderStyle =
+            DataGridViewCellBorderStyle.SingleHorizontal;
+
+        dgvClientes.DefaultCellStyle =
+            new DataGridViewCellStyle
+            {
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(51, 65, 85),
+                SelectionBackColor = Color.FromArgb(220, 252, 231),
+                SelectionForeColor = Color.FromArgb(15, 23, 42),
+                Font = new Font(
+                    "Segoe UI",
+                    9F,
+                    FontStyle.Regular),
+                Padding = new Padding(7, 0, 3, 0)
+            };
+
+        dgvClientes.ColumnHeadersDefaultCellStyle =
+            new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(15, 23, 42),
+                ForeColor = Color.White,
+                SelectionBackColor = Color.FromArgb(15, 23, 42),
+                SelectionForeColor = Color.White,
+                Font = new Font(
+                    "Segoe UI",
+                    9F,
+                    FontStyle.Bold),
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                Padding = new Padding(7, 0, 3, 0)
+            };
+
+        dgvClientes.AlternatingRowsDefaultCellStyle =
+            new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(248, 250, 252),
+                ForeColor = Color.FromArgb(51, 65, 85),
+                SelectionBackColor = Color.FromArgb(220, 252, 231),
+                SelectionForeColor = Color.FromArgb(15, 23, 42)
+            };
+
+        dgvClientes.RowTemplate.Height = 37;
+
+        dgvClientes.DataError += (sender, e) =>
+        {
+            e.ThrowException = false;
+        };
+
+        // Primero se agrega la tabla y después el encabezado.
+        // El encabezado ocupa la parte superior y la tabla el espacio restante.
+
         panelLista.Controls.Add(dgvClientes);
 
+        panelLista.Controls.Add(panelEncabezadoLista);
+
         // =====================================================
-        // AGREGAR PANELES
+        // AGREGAR PANELES AL FORMULARIO
         // =====================================================
 
         Controls.Add(panelLista);
+
         Controls.Add(panelFormulario);
+
         Controls.Add(panelSuperior);
 
         ResumeLayout(false);
+    }
+
+    // =========================================================
+    // ESTILO DE ETIQUETAS
+    // =========================================================
+
+    private void ConfigurarEtiquetaCliente(
+        Label etiqueta,
+        string texto,
+        int posicionY)
+    {
+        etiqueta.AutoSize = false;
+
+        etiqueta.Font = new Font(
+            "Segoe UI",
+            9F,
+            FontStyle.Bold);
+
+        etiqueta.ForeColor =
+            Color.FromArgb(51, 65, 85);
+
+        etiqueta.Location =
+            new Point(18, posicionY);
+
+        etiqueta.Size =
+            new Size(324, 21);
+
+        etiqueta.Text = texto;
+    }
+
+    // =========================================================
+    // ESTILO DE CAMPOS DE TEXTO
+    // =========================================================
+
+    private void ConfigurarCampoCliente(
+        TextBox campo,
+        int posicionY,
+        int ancho)
+    {
+        campo.Font = new Font(
+            "Segoe UI",
+            9.5F,
+            FontStyle.Regular);
+
+        campo.Location =
+            new Point(18, posicionY);
+
+        campo.Size =
+            new Size(ancho, 29);
+
+        campo.BorderStyle =
+            BorderStyle.FixedSingle;
+
+        campo.BackColor =
+            Color.FromArgb(248, 250, 252);
+
+        campo.ForeColor =
+            Color.FromArgb(15, 23, 42);
+    }
+
+    // =========================================================
+    // ESTILO DE BOTONES
+    // =========================================================
+
+    private void ConfigurarBotonCliente(
+        Button boton,
+        string texto,
+        Point posicion,
+        Size tamano,
+        Color fondo,
+        Color primerPlano,
+        Color borde,
+        Color hover,
+        Color presionado,
+        bool tieneBorde)
+    {
+        boton.BackColor = fondo;
+
+        boton.ForeColor = primerPlano;
+
+        boton.FlatStyle = FlatStyle.Flat;
+
+        boton.FlatAppearance.BorderSize =
+            tieneBorde ? 1 : 0;
+
+        if (tieneBorde)
+        {
+            boton.FlatAppearance.BorderColor = borde;
+        }
+
+        boton.FlatAppearance.MouseOverBackColor = hover;
+
+        boton.FlatAppearance.MouseDownBackColor = presionado;
+
+        boton.Font = new Font(
+            "Segoe UI",
+            9F,
+            FontStyle.Bold);
+
+        boton.Location = posicion;
+
+        boton.Size = tamano;
+
+        boton.Text = texto;
+
+        boton.UseVisualStyleBackColor = false;
+
+        boton.Cursor = Cursors.Hand;
     }
 }

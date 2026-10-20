@@ -3,45 +3,13 @@ using GymSystem.Entidades;
 
 namespace GymSystem.Negocio;
 
-public class PagoService
+public partial class PagoService
 {
     private readonly PagoRepository _repository;
 
     public PagoService()
     {
         _repository = new PagoRepository();
-    }
-
-    public List<Pago> Buscar(
-        string texto = "")
-    {
-        return _repository.Buscar(texto);
-    }
-
-    public void Registrar(
-        Pago pago,
-        InscripcionService inscripcionService)
-    {
-        Validar(pago);
-
-        if (!pago.IdInscripcion.HasValue)
-        {
-            throw new ArgumentException(
-                "Seleccione una inscripción activa.");
-        }
-
-        bool inscripcionActiva =
-            inscripcionService.EsActiva(
-                pago.IdInscripcion.Value,
-                pago.IdCliente);
-
-        if (!inscripcionActiva)
-        {
-            throw new InvalidOperationException(
-                "La inscripción seleccionada ya no está activa.");
-        }
-
-        _repository.Crear(pago);
     }
 
     private static void Validar(

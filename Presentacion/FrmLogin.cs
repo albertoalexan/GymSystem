@@ -18,7 +18,14 @@ public partial class FrmLogin : Form
             btnIniciarSesion;
     }
 
-    private void BtnIniciarSesion_Click(
+    private void ChkMostrarClave_CheckedChanged(
+        object? sender,
+        EventArgs e)
+    {
+        txtClave.UseSystemPasswordChar =
+            !chkMostrarClave.Checked;
+    }
+    private async void BtnIniciarSesion_Click(
         object? sender,
         EventArgs e)
     {
@@ -55,7 +62,7 @@ public partial class FrmLogin : Form
         try
         {
             Usuario? usuarioAutenticado =
-                usuarioService.Autenticar(
+                await usuarioService.AutenticarAsync(
                     usuario,
                     clave);
 

@@ -7,6 +7,7 @@ namespace GymSystem;
 public partial class FrmPlanes : Form
 {
     private int idPlanSeleccionado = 0;
+    private int _versionCargaPlanes;
     private readonly PlanService planService;
 
     public FrmPlanes()
@@ -21,22 +22,31 @@ public partial class FrmPlanes : Form
         chkInactivos.CheckedChanged += ChkInactivos_CheckedChanged;
     }
 
-    private void FrmPlanes_Load(
+    private async void FrmPlanes_Load(
         object? sender,
         EventArgs e)
     {
-        CargarPlanes();
+        await CargarPlanesAsync();
     }
 
-    private void CargarPlanes(
+    private async Task CargarPlanesAsync(
         string textoBuscar = "")
     {
+        int versionSolicitud =
+            Interlocked.Increment(ref _versionCargaPlanes);
+
         try
         {
             List<Plan> planes =
-                planService.Buscar(
+                await planService.BuscarAsync(
                     textoBuscar,
                     chkInactivos.Checked);
+
+            if (IsDisposed ||
+                versionSolicitud != Volatile.Read(ref _versionCargaPlanes))
+            {
+                return;
+            }
 
             DataTable tabla =
                 CrearTablaPlanes(planes);
@@ -65,6 +75,7 @@ public partial class FrmPlanes : Form
         }
         catch (Exception ex)
         {
+            if (IsDisposed || versionSolicitud != Volatile.Read(ref _versionCargaPlanes)) return;
             MessageBox.Show(
                 "No fue posible cargar los planes:\n\n" +
                 ex.Message,
@@ -155,21 +166,21 @@ public partial class FrmPlanes : Form
             fila.Cells["Precio"].Value?.ToString() ?? "";
     }
 
-    private void TxtBuscar_TextChanged(
+    private async void TxtBuscar_TextChanged(
         object? sender,
         EventArgs e)
     {
-        CargarPlanes(
+        await CargarPlanesAsync(
             txtBuscar.Text.Trim());
     }
 
-    private void ChkInactivos_CheckedChanged(
+    private async void ChkInactivos_CheckedChanged(
         object? sender,
         EventArgs e)
     {
         LimpiarCampos();
 
-        CargarPlanes(
+        await CargarPlanesAsync(
             txtBuscar.Text.Trim());
     }
 
@@ -180,7 +191,7 @@ public partial class FrmPlanes : Form
         LimpiarCampos();
     }
 
-    private void BtnGuardar_Click(
+    private async void BtnGuardar_Click(
         object? sender,
         EventArgs e)
     {
@@ -255,7 +266,7 @@ public partial class FrmPlanes : Form
 
         try
         {
-            planService.Guardar(plan);
+            await planService.GuardarAsync(plan);
 
             MessageBox.Show(
                 idPlanSeleccionado == 0
@@ -267,7 +278,7 @@ public partial class FrmPlanes : Form
 
             LimpiarCampos();
 
-            CargarPlanes(
+            await CargarPlanesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (ArgumentException ex)
@@ -289,7 +300,7 @@ public partial class FrmPlanes : Form
         }
     }
 
-    private void BtnEliminar_Click(
+    private async void BtnEliminar_Click(
         object? sender,
         EventArgs e)
     {
@@ -317,7 +328,7 @@ public partial class FrmPlanes : Form
 
         try
         {
-            planService.Desactivar(
+            await planService.DesactivarAsync(
                 idPlanSeleccionado);
 
             MessageBox.Show(
@@ -328,7 +339,7 @@ public partial class FrmPlanes : Form
 
             LimpiarCampos();
 
-            CargarPlanes(
+            await CargarPlanesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (Exception ex)
@@ -342,7 +353,7 @@ public partial class FrmPlanes : Form
         }
     }
 
-    private void BtnRestaurar_Click(
+    private async void BtnRestaurar_Click(
         object? sender,
         EventArgs e)
     {
@@ -380,7 +391,7 @@ public partial class FrmPlanes : Form
 
         try
         {
-            planService.Restaurar(
+            await planService.RestaurarAsync(
                 idPlanSeleccionado);
 
             MessageBox.Show(
@@ -391,7 +402,7 @@ public partial class FrmPlanes : Form
 
             LimpiarCampos();
 
-            CargarPlanes(
+            await CargarPlanesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (Exception ex)

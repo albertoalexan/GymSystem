@@ -1,19 +1,15 @@
-# Visual Studio
-.vs/
-*.user
-*.suo
-
-# .NET
 bin/
 obj/
-
-# Backups temporales
-*.copia*
-*.capa*
-
-# Archivos temporales
-*.tmp
+.vs/
+TestResults/
+*.user
+*.suo
 *.log
-
-# NuGet
-packages/
+*.bak
+*.backup*
+*.tmp
+*.temp
+# Archivos temporales y respaldos
+*.zip
+*.7z
+*.rar

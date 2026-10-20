@@ -7,6 +7,7 @@ namespace GymSystem;
 public partial class FrmClientes : Form
 {
     private int idClienteSeleccionado = 0;
+    private int _versionCargaClientes;
     private readonly ClienteService clienteService;
 
     public FrmClientes()
@@ -21,23 +22,33 @@ public partial class FrmClientes : Form
         chkInactivos.CheckedChanged += ChkInactivos_CheckedChanged;
     }
 
-    private void FrmClientes_Load(
+    private async void FrmClientes_Load(
         object? sender,
         EventArgs e)
     {
         LimpiarCampos();
-        CargarClientes();
+        await CargarClientesAsync();
     }
 
-    private void CargarClientes(
+    private async Task CargarClientesAsync(
         string textoBuscar = "")
     {
+        int versionSolicitud =
+            Interlocked.Increment(ref _versionCargaClientes);
+
         try
         {
             List<Cliente> clientes =
-                clienteService.Buscar(
+                await clienteService.BuscarAsync(
                     textoBuscar,
                     chkInactivos.Checked);
+
+            // No mostrar resultados de una búsqueda anterior.
+            if (IsDisposed ||
+                versionSolicitud != Volatile.Read(ref _versionCargaClientes))
+            {
+                return;
+            }
 
             DataTable tabla =
                 CrearTablaClientes(clientes);
@@ -71,6 +82,7 @@ public partial class FrmClientes : Form
         }
         catch (Exception ex)
         {
+            if (IsDisposed || versionSolicitud != Volatile.Read(ref _versionCargaClientes)) return;
             MessageBox.Show(
                 "No fue posible cargar los clientes:\n\n" +
                 ex.Message,
@@ -155,21 +167,21 @@ public partial class FrmClientes : Form
         return tabla;
     }
 
-    private void TxtBuscar_TextChanged(
+    private async void TxtBuscar_TextChanged(
         object? sender,
         EventArgs e)
     {
-        CargarClientes(
+        await CargarClientesAsync(
             txtBuscar.Text.Trim());
     }
 
-    private void ChkInactivos_CheckedChanged(
+    private async void ChkInactivos_CheckedChanged(
         object? sender,
         EventArgs e)
     {
         LimpiarCampos();
 
-        CargarClientes(
+        await CargarClientesAsync(
             txtBuscar.Text.Trim());
     }
 
@@ -411,7 +423,7 @@ public partial class FrmClientes : Form
         LimpiarCampos();
     }
 
-    private void BtnGuardar_Click(
+    private async void BtnGuardar_Click(
         object? sender,
         EventArgs e)
     {
@@ -450,7 +462,7 @@ public partial class FrmClientes : Form
 
         try
         {
-            clienteService.Guardar(cliente);
+            await clienteService.GuardarAsync(cliente);
 
             MessageBox.Show(
                 idClienteSeleccionado == 0
@@ -462,7 +474,7 @@ public partial class FrmClientes : Form
 
             LimpiarCampos();
 
-            CargarClientes(
+            await CargarClientesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (InvalidOperationException ex)
@@ -492,7 +504,7 @@ public partial class FrmClientes : Form
         }
     }
 
-    private void BtnEliminar_Click(
+    private async void BtnEliminar_Click(
         object? sender,
         EventArgs e)
     {
@@ -520,7 +532,7 @@ public partial class FrmClientes : Form
 
         try
         {
-            clienteService.Desactivar(
+            await clienteService.DesactivarAsync(
                 idClienteSeleccionado);
 
             MessageBox.Show(
@@ -531,7 +543,7 @@ public partial class FrmClientes : Form
 
             LimpiarCampos();
 
-            CargarClientes(
+            await CargarClientesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (Exception ex)
@@ -545,7 +557,7 @@ public partial class FrmClientes : Form
         }
     }
 
-    private void BtnRestaurar_Click(
+    private async void BtnRestaurar_Click(
         object? sender,
         EventArgs e)
     {
@@ -583,7 +595,7 @@ public partial class FrmClientes : Form
 
         try
         {
-            clienteService.Restaurar(
+            await clienteService.RestaurarAsync(
                 idClienteSeleccionado);
 
             MessageBox.Show(
@@ -594,7 +606,7 @@ public partial class FrmClientes : Form
 
             LimpiarCampos();
 
-            CargarClientes(
+            await CargarClientesAsync(
                 txtBuscar.Text.Trim());
         }
         catch (Exception ex)

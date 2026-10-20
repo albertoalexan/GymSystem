@@ -22,24 +22,24 @@ public partial class FrmPagos : Form
         txtBuscar.TextChanged += TxtBuscar_TextChanged;
     }
 
-    private void FrmPagos_Load(
+    private async void FrmPagos_Load(
         object? sender,
         EventArgs e)
     {
-        CargarClientes();
-        CargarPagos();
+        await CargarClientesAsync();
+        await CargarPagosAsync();
 
         cmbCliente.SelectedIndex = -1;
         cmbInscripcion.DataSource = null;
         cmbMetodo.SelectedIndex = -1;
     }
 
-    private void CargarClientes()
+    private async Task CargarClientesAsync()
     {
         try
         {
             List<Cliente> clientes =
-                clienteService.Listar(true);
+                await clienteService.ListarAsync(true);
 
             cmbCliente.DataSource = clientes;
             cmbCliente.DisplayMember = "Nombre";
@@ -57,7 +57,7 @@ public partial class FrmPagos : Form
         }
     }
 
-    private void CmbCliente_SelectedIndexChanged(
+    private async void CmbCliente_SelectedIndexChanged(
         object? sender,
         EventArgs e)
     {
@@ -74,16 +74,16 @@ public partial class FrmPagos : Form
             return;
         }
 
-        CargarInscripciones(idCliente);
+        await CargarInscripcionesAsync(idCliente);
     }
 
-    private void CargarInscripciones(
+    private async Task CargarInscripcionesAsync(
         int idCliente)
     {
         try
         {
             List<Inscripcion> inscripciones =
-                inscripcionService.ListarActivasPorCliente(
+                await inscripcionService.ListarActivasPorClienteAsync(
                     idCliente);
 
             cmbInscripcion.DataSource =
@@ -108,13 +108,13 @@ public partial class FrmPagos : Form
         }
     }
 
-    private void CargarPagos(
+    private async Task CargarPagosAsync(
         string textoBuscar = "")
     {
         try
         {
             List<Pago> pagos =
-                pagoService.Buscar(
+                await pagoService.BuscarAsync(
                     textoBuscar);
 
             DataTable tabla =
@@ -361,7 +361,7 @@ public partial class FrmPagos : Form
         control.Focus();
     }
 
-    private void BtnGuardar_Click(
+    private async void BtnGuardar_Click(
         object? sender,
         EventArgs e)
     {
@@ -431,7 +431,7 @@ public partial class FrmPagos : Form
 
         try
         {
-            pagoService.Registrar(
+            await pagoService.RegistrarAsync(
                 pago,
                 inscripcionService);
 
@@ -445,7 +445,7 @@ public partial class FrmPagos : Form
                 null,
                 EventArgs.Empty);
 
-            CargarPagos(
+            await CargarPagosAsync(
                 txtBuscar.Text.Trim());
         }
         catch (InvalidOperationException ex)
@@ -456,7 +456,7 @@ public partial class FrmPagos : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
 
-            CargarInscripciones(
+            await CargarInscripcionesAsync(
                 idCliente);
         }
         catch (ArgumentException ex)
@@ -478,11 +478,11 @@ public partial class FrmPagos : Form
         }
     }
 
-    private void TxtBuscar_TextChanged(
+    private async void TxtBuscar_TextChanged(
         object? sender,
         EventArgs e)
     {
-        CargarPagos(
+        await CargarPagosAsync(
             txtBuscar.Text.Trim());
     }
 }

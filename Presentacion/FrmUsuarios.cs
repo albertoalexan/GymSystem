@@ -21,20 +21,20 @@ public partial class FrmUsuarios : Form
         dgvUsuarios.CellClick += DgvUsuarios_CellClick;
     }
 
-    private void FrmUsuarios_Load(
+    private async void FrmUsuarios_Load(
         object? sender,
         EventArgs e)
     {
-        CargarUsuarios();
+        await CargarUsuariosAsync();
     }
 
-    private void CargarUsuarios(
+    private async Task CargarUsuariosAsync(
         string textoBuscar = "")
     {
         try
         {
             List<Usuario> usuarios =
-                usuarioService.Buscar(
+                await usuarioService.BuscarAsync(
                     textoBuscar,
                     chkInactivos.Checked);
 
@@ -116,19 +116,19 @@ public partial class FrmUsuarios : Form
         return tabla;
     }
 
-    private void TxtBuscar_TextChanged(
+    private async void TxtBuscar_TextChanged(
         object? sender,
         EventArgs e)
     {
-        CargarUsuarios(
+        await CargarUsuariosAsync(
             txtBuscar.Text.Trim());
     }
 
-    private void ChkInactivos_CheckedChanged(
+    private async void ChkInactivos_CheckedChanged(
         object? sender,
         EventArgs e)
     {
-        CargarUsuarios(
+        await CargarUsuariosAsync(
             txtBuscar.Text.Trim());
     }
 
@@ -150,7 +150,7 @@ public partial class FrmUsuarios : Form
                 fila.Cells["IdUsuario"].Value);
     }
 
-    private void BtnDesactivar_Click(
+    private async void BtnDesactivar_Click(
         object? sender,
         EventArgs e)
     {
@@ -177,7 +177,7 @@ public partial class FrmUsuarios : Form
 
         try
         {
-            usuarioService.Desactivar(
+            await usuarioService.DesactivarAsync(
                 idUsuarioSeleccionado);
 
             MessageBox.Show(
@@ -186,7 +186,7 @@ public partial class FrmUsuarios : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
-            CargarUsuarios(
+            await CargarUsuariosAsync(
                 txtBuscar.Text.Trim());
         }
         catch (ArgumentException ex)
@@ -208,7 +208,7 @@ public partial class FrmUsuarios : Form
         }
     }
 
-    private void BtnRestaurar_Click(
+    private async void BtnRestaurar_Click(
         object? sender,
         EventArgs e)
     {
@@ -246,7 +246,7 @@ public partial class FrmUsuarios : Form
 
         try
         {
-            usuarioService.Restaurar(
+            await usuarioService.RestaurarAsync(
                 idUsuarioSeleccionado);
 
             MessageBox.Show(
@@ -255,7 +255,7 @@ public partial class FrmUsuarios : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
-            CargarUsuarios(
+            await CargarUsuariosAsync(
                 txtBuscar.Text.Trim());
         }
         catch (ArgumentException ex)
@@ -277,7 +277,7 @@ public partial class FrmUsuarios : Form
         }
     }
 
-    private void BtnCrearUsuario_Click(
+    private async void BtnCrearUsuario_Click(
         object? sender,
         EventArgs e)
     {
@@ -286,7 +286,7 @@ public partial class FrmUsuarios : Form
 
         formularioCrearCuenta.ShowDialog(this);
 
-        CargarUsuarios(
+        await CargarUsuariosAsync(
             txtBuscar.Text.Trim());
     }
 }

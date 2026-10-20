@@ -4,80 +4,13 @@ using GymSystem.Entidades;
 
 namespace GymSystem.Negocio;
 
-public class ClienteService
+public partial class ClienteService
 {
     private readonly ClienteRepository _repository;
 
     public ClienteService()
     {
         _repository = new ClienteRepository();
-    }
-
-    public List<Cliente> Listar(
-        bool soloActivos = true)
-    {
-        return _repository.Listar(
-            soloActivos);
-    }
-
-    public List<Cliente> Buscar(
-        string texto,
-        bool incluirInactivos = false)
-    {
-        if (string.IsNullOrWhiteSpace(texto))
-        {
-            return _repository.Listar(
-                !incluirInactivos);
-        }
-
-        return _repository.Buscar(
-            texto,
-            incluirInactivos);
-    }
-
-    public void Guardar(Cliente cliente)
-    {
-        Validar(cliente);
-
-        if (_repository.ExisteDuplicado(
-            cliente.NumeroCedula,
-            cliente.Correo,
-            cliente.IdCliente))
-        {
-            throw new InvalidOperationException(
-                "La cédula o el correo ya están registrados.");
-        }
-
-        if (cliente.IdCliente == 0)
-        {
-            _repository.Crear(cliente);
-        }
-        else
-        {
-            _repository.Actualizar(cliente);
-        }
-    }
-
-    public void Desactivar(int idCliente)
-    {
-        if (idCliente <= 0)
-        {
-            throw new ArgumentException(
-                "El cliente seleccionado no es válido.");
-        }
-
-        _repository.Desactivar(idCliente);
-    }
-
-    public void Restaurar(int idCliente)
-    {
-        if (idCliente <= 0)
-        {
-            throw new ArgumentException(
-                "El cliente seleccionado no es válido.");
-        }
-
-        _repository.Restaurar(idCliente);
     }
 
     private static void Validar(
